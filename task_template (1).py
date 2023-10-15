@@ -45,25 +45,30 @@ password = str(input("Enter your password:\n"))
 print(cara)
 
 if user in users.keys() and password in users.values():
-    print("Hello", user.upper(), "you can analyze texts.")
+    print(f"Hello {user.upper()} you can analyze texts.")
 else:
-    print("unregistered user, terminating the program..")
+    print(f"Unregistered user, terminating the program..")
     quit()
 print(cara)
-print("We have", len(TEXTS), "texts to be analyzed")
+print(f"We have {len(TEXTS)} texts to be analyzed")
 print(cara)
 
-choice = (input("Enter a number btw. 1 and 3 to select:\n"))
-# print(cara)
+while True:
+    choice = input(f"Enter a number btw. 1 and {len(TEXTS)} to select:\n")
 
-if choice.isdigit():
-    choice = int(choice)
-    if 1 <= choice <= 3:
-        selected_text = TEXTS[choice - 1]
-        print("you have selected this text:", cara, selected_text, sep="\n")
+    if choice.isdigit():
+        choice = int(choice)
+        if 1 <= choice <= len(TEXTS):
+            selected_text = TEXTS[choice - 1]
+            print("you have selected this text:", cara, selected_text, sep="\n")
+            break
+        else:
+            print(f"Invalid choice, you can only enter a number 1 to {len(TEXTS)}, try again")
     else:
-        print("Error!.............end of program")
-        quit()
+        print(f"Invalid choice, you can only enter a number 1 to {len(TEXTS)}, try again")
+
+
+
 clear_text = []
 sum_words = 0
 sum_upper_word = 0
@@ -76,41 +81,23 @@ sum_digit = 0
 
 #  cisteni
 for word in selected_text.split():
-    clear_word = word.strip()
+    clear_word = word.strip(".,?:;!")
     clear_text.append(clear_word)
 
 # pocet slov
 sum_words = len(clear_text)
-# print(sum_words)
-# pocet slov zacinajici velkym pismenem
+
 for word in clear_text:
     if word[0].isupper():
         sum_upper_word += 1
-# print(sum_upper_word)
-
-# pocet slov psanych velkymi pismeny
-for word in clear_text:
-    if word.isupper() and not word.isalpha():
+    elif word.isupper(): 
         sum_upper_all += 1
-# print(sum_upper_all)
-
-# pocet slov psane malymi pismeny
-for word in clear_text:
-    if word.islower():
+    elif word.islower():
         sum_lower_word += 1
-# print(sum_lower_word)
-
-# pocet cisel
-for word in clear_text:
-    if word.isdigit():
+    elif word.isdigit():
         digits += 1
-# print(digits)
-
-# sumu vsech cisel
-for word in clear_text:
-    if word.isdigit():
-        sum_digit += int(word)
-# print(sum_digit)
+        if word.isdigit():
+            sum_digit += int(word)
 
 print(cara)
 print(f"There are {sum_words} words in the selected text.")
@@ -125,7 +112,6 @@ print(cara)
 word_length = {}
 
 for word in clear_text:
-    word = word.strip(",?:;!")
     length = len(word)
     if length in word_length:
         word_length[length] += 1
